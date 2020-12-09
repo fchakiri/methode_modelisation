@@ -1,0 +1,42 @@
+---
+title: "Devoir - partie 1"
+output: 
+  html_notebook: 
+    highlight: tango
+theme: cerulean
+---
+
+```{R}
+summary(devoir_sample)
+install.packages("survey")
+library("survey")
+library("tableone")
+library("dplyr")
+```
+
+Question 1: l'estimation pour chacune des cohortes la prévalence de la maladie dans sa population-cible.
+```{R}
+pre_sample<-svydesign(~1,weights=~poids_sond,data=devoir_sample[!is.na(devoir_sample$poids_sond),])
+str(pre)
+res_pre<-svyCreateTableOne(vars="statut",strata="cohorte",data=pre,test=FALSE)
+res_pre
+```
+
+
+Question 2:
+On souhaite à présent utiliser l'information issue de toutes les cohortes pour estimer la prévalence de la maladie dans toute la population des 20-90 ans.
+
+Avec la même hypothèse que pour la question 1, pourquoi ne peut-on pas simplement réaliser cette estimation sur l'ensemble de l'échantillon en utilisant directement les poids de sondage proposés?
+
+```{R}
+-On peut pas réaliser cette estimation sur l'ensemble de l'échantillon en utilisant directement les poids de sondage proposé car d après le summary en remarque que le poids de sondage présente 69 données manquante ce qui va empêcher le calcule d'estimation sur toute la population
+- les 5 groupes de cohorte ne représentent pas les proportions des caractéristiques de la population générale, ainsi qu'on ne connait pas le poid de chaque groupe dans la population pour pouvoir estimer la prévalence de la maladie dans toute la population  
+
+```
+
+
+
+Quelle(s) information(s) serait nécessaire pour réaliser cette estimation ?
+```{R}
+Pour réaliser cette estimation on aura besoin du poids représentative de chaque groupe dans toute la population ainsi que les caractéristiques des individus des groupes dans la population générale,  la distribution de l’âge et de sexe dans toute la population ;
+
